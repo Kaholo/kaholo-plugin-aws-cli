@@ -1,0 +1,12 @@
+{
+  "name": "kaholo-plugin-library",
+  "version": "1.0.0",
+  "description": "Kaholo library for plugins",
+  "main": "kaholo-plugin-library.js",
+  "scripts": {},
+  "author": "Kaholo",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "4.17.21"
+  }
+}
