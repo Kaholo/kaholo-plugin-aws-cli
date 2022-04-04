@@ -22,7 +22,7 @@ function readActionArguments(action, settings) {
 }
 
 function removeUndefinedAndEmpty(object) {
-  if (!_.isPlainObject(object)) { return object; }
+  if (!_.isPlainObject(object)) { return _.clone(object); }
   return _.omitBy(object, (value) => value === "" || _.isNil(value) || (_.isObjectLike(value) && _.isEmpty(value)));
 }
 
