@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "lodash": "4.17.21",
-    "kaholo-plugin-library": "file:pseudo-modules/kaholo-plugin-library"
+    "kaholo-plugin-library": "github:kaholo/kaholo-plugin-library#main"
   }
 }
