@@ -1,26 +1,6 @@
 const _ = require("lodash");
 const parsers = require("./parsers");
 
-function loadConfiguration() {
-  try {
-    // eslint-disable-next-line global-require
-    return require("../../config.json");
-  } catch (exception) {
-    console.error(exception);
-    throw new Error("Could not retrieve the plugin configuration");
-  }
-}
-
-function loadMethodFromConfiguration(methodName) {
-  const config = loadConfiguration();
-  return config.methods.find((m) => m.name === methodName);
-}
-
-function removeUndefinedAndEmpty(object) {
-  if (!_.isPlainObject(object)) { return object; }
-  return _.omitBy(object, (value) => value === "" || _.isNil(value) || (_.isObjectLike(value) && _.isEmpty(value)));
-}
-
 function readActionArguments(action, settings) {
   const method = loadMethodFromConfiguration(action.method.name);
   const paramValues = removeUndefinedAndEmpty(action.params);
@@ -41,6 +21,11 @@ function readActionArguments(action, settings) {
   return removeUndefinedAndEmpty(paramValues);
 }
 
+function removeUndefinedAndEmpty(object) {
+  if (!_.isPlainObject(object)) { return object; }
+  return _.omitBy(object, (value) => value === "" || _.isNil(value) || (_.isObjectLike(value) && _.isEmpty(value)));
+}
+
 function parseMethodParameter(paramDefinition, paramValue, settingsValue) {
   const valueToParse = paramValue || settingsValue || paramDefinition.default;
   if (_.isNil(valueToParse)) {
@@ -52,6 +37,21 @@ function parseMethodParameter(paramDefinition, paramValue, settingsValue) {
 
   const parserToUse = paramDefinition.parserType || paramDefinition.type;
   return parsers.resolveParser(parserToUse)(valueToParse);
+}
+
+function loadMethodFromConfiguration(methodName) {
+  const config = loadConfiguration();
+  return config.methods.find((m) => m.name === methodName);
+}
+
+function loadConfiguration() {
+  try {
+    // eslint-disable-next-line global-require
+    return require("../../config.json");
+  } catch (exception) {
+    console.error(exception);
+    throw new Error("Could not retrieve the plugin configuration");
+  }
 }
 
 module.exports = {
