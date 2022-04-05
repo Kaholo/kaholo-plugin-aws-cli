@@ -132,4 +132,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-pseudo-modules/kaholo-plugin-library/node_modules
+.kaholotmp
