@@ -1,0 +1,108 @@
+{
+  "name": "aws-cli",
+  "type": "executer",
+  "imgUrl": "logo.png",
+  "execProgram": "node",
+  "main": "app.js",
+  "version": "0.1.0",
+  "description": "Kaholo plugin AWS CLI",
+  "category": "AWS",
+  "keywords": ["GCP", "compute", "google", "platform", "vm", "instance", "cloud", "cluster", "project", "infra", "infrastructure", "cli", "network", "subnetwork", "firewall", "IP", "route"],
+  "settings": [
+    {
+      "name": "AWS_ACCESS_KEY_ID",
+      "viewName": "Access Key ID",
+      "type": "vault",
+      "description": "The default AWS Access Key ID to use for authentication.",
+      "placeholder": "AKIAIOSFODNN7EXAMPLE",
+      "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
+    },
+    {
+      "name": "AWS_SECRET_ACCESS_KEY",
+      "viewName": "Access Key Secret",
+      "type": "vault",
+      "description": "The default AWS Access Key secret to use for authentication.",
+      "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+      "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
+    },
+    {
+      "name": "REGION",
+      "viewName": "Region",
+      "type": "string",
+      "description": "The ID of the default region to make requests on.",
+      "placeholder": "us-east-2",
+      "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
+    }
+  ],
+  "methods": [
+    {
+      "name": "testCli",
+      "viewName": "Test CLI",
+      "params": [
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "viewName": "Access Key ID",
+          "type": "vault",
+          "description": "This is a parameter taken from the vault to access AWS",
+          "placeholder": "AKIAIOSFODNN7EXAMPLE",
+          "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "viewName": "Access Key Secret",
+          "type": "vault",
+          "description": "This is a parameter taken from the vault to access AWS",
+          "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+          "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
+        },
+        {
+          "name": "REGION",
+          "viewName": "Region",
+          "type": "string",
+          "functionName": "listRegionsAutocomplete",
+          "description": "Create the new bucket in the specified region.",
+          "placeholder": "us-east-2",
+          "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
+        }
+      ]
+    },
+    {
+      "name": "runCommand",
+      "viewName": "Run Command",
+      "params": [
+        {
+          "name": "AWS_ACCESS_KEY_ID",
+          "viewName": "Access Key ID",
+          "type": "vault",
+          "description": "This is a parameter taken from the vault to access AWS",
+          "placeholder": "AKIAIOSFODNN7EXAMPLE",
+          "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
+        },
+        {
+          "name": "AWS_SECRET_ACCESS_KEY",
+          "viewName": "Access Key Secret",
+          "type": "vault",
+          "description": "This is a parameter taken from the vault to access AWS",
+          "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+          "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
+        },
+        {
+          "name": "REGION",
+          "viewName": "Region",
+          "type": "string",
+          "description": "Create the new bucket in the specified region.",
+          "placeholder": "us-east-2",
+          "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
+        },
+        {
+          "name": "command",
+          "viewName": "Command",
+          "type": "string",
+          "description": "AWS CLI command to run",
+          "placeholder": "aws ec2 describe-instances",
+          "learnUrl": "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html"
+        }
+      ]
+    }
+  ]
+}
