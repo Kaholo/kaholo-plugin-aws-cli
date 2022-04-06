@@ -13,8 +13,12 @@ async function testCli(parameters) {
 
 async function runCommand(parameters) {
   const credentials = helpers.readCredentials(parameters);
-  const result = await awsCli.execute(credentials, parameters.command);
-  return result.stdout;
+  try {
+    const result = await awsCli.execute(credentials, parameters.command);
+    return result.stdout;
+  } catch (error) {
+    throw new Error(error.stderr ?? error);
+  }
 }
 
 module.exports = kaholo.bootstrap({
