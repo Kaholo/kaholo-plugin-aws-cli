@@ -22,10 +22,9 @@ async function runCommand(parameters) {
   }
 }
 
-module.exports = {
-  ...kaholo.bootstrap({
-    testCli,
-    runCommand,
-  }),
+module.exports = kaholo.bootstrap({
+  testCli,
+  runCommand,
+}, {
   listRegions: awsPluginLibrary.autocomplete.listRegions,
-};
+});
