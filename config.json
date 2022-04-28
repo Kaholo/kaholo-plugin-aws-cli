@@ -30,7 +30,6 @@
       "viewName": "Region",
       "type": "string",
       "description": "The ID of the default region to make requests on.",
-      "placeholder": "us-east-2",
       "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
     }
   ],
@@ -58,8 +57,9 @@
         {
           "name": "REGION",
           "viewName": "Region",
-          "type": "string",
-          "functionName": "listRegionsAutocomplete",
+          "type": "autocomplete",
+          "autocompleteType": "function",
+          "functionName": "listRegions",
           "description": "Create the new bucket in the specified region.",
           "placeholder": "us-east-2",
           "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
@@ -89,7 +89,9 @@
         {
           "name": "REGION",
           "viewName": "Region",
-          "type": "string",
+          "type": "autocomplete",
+          "autocompleteType": "function",
+          "functionName": "listRegions",
           "description": "Create the new bucket in the specified region.",
           "placeholder": "us-east-2",
           "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"

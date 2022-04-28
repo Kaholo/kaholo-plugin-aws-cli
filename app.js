@@ -1,3 +1,4 @@
+const awsPluginLibrary = require("kaholo-aws-plugin-library");
 const kaholo = require("kaholo-plugin-library");
 const helpers = require("./helpers");
 const awsCli = require("./awscli");
@@ -21,7 +22,10 @@ async function runCommand(parameters) {
   }
 }
 
-module.exports = kaholo.bootstrap({
-  testCli,
-  runCommand,
-}, {});
+module.exports = {
+  ...kaholo.bootstrap({
+    testCli,
+    runCommand,
+  }),
+  listRegions: awsPluginLibrary.autocomplete.listRegions,
+};
