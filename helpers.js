@@ -23,9 +23,9 @@ function generateRandomEnvironmentVariableName() {
 function extractFileArgumentsFromCommand(command) {
   // Example matches: file:///path/to/file, "file://file.json", 'fileb:///path/to/binary-file'
   const filepathRegex = /(?:fileb?:\/\/[^\s'"]+|"fileb?:\/\/.*?[^\\]"|'fileb?:\/\/.*?[^\\]')+/g;
-  return [...command.matchAll(filepathRegex)].map(([path]) => ({
-    path: extractPathFromFileArgument(path),
-    replaceBy: path,
+  return [...command.matchAll(filepathRegex)].map(([fileArgument]) => ({
+    path: extractPathFromFileArgument(fileArgument),
+    replaceBy: fileArgument,
     environmentVariable: generateRandomEnvironmentVariableName(),
   }));
 }
