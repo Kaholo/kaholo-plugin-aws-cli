@@ -1,16 +1,33 @@
 const _ = require("lodash");
 const util = require("util");
 const childProcess = require("child_process");
+const {
+  extractFileArgumentsFromCommand,
+  createVolumeEntriesFromFiles,
+  mapEnvironmentVariablesFromVolumes,
+  replaceFileArguments,
+} = require("./helpers");
 
 const exec = util.promisify(childProcess.exec);
 
-// eslint-disable-next-line no-multi-str
-const DOCKER_AWS_CLI_COMMAND = "\
-docker run \
--e AWS_ACCESS_KEY_ID \
--e AWS_SECRET_ACCESS_KEY \
--e AWS_DEFAULT_REGION \
---rm amazon/aws-cli";
+function createDockerCommand({ volumes = [], environmentVariables = [] }) {
+  const volumesString = volumes
+    .map(({ file, mountPoint }) => (
+      `-v $${file.environmentVariable}:$${mountPoint.environmentVariable}`
+    ))
+    .join(" ");
+  const environmentVariablesString = environmentVariables
+    .map((environmentVariable) => `-e ${environmentVariable}`)
+    .join(" ");
+
+  return `docker run \
+    -e AWS_ACCESS_KEY_ID \
+    -e AWS_SECRET_ACCESS_KEY \
+    -e AWS_DEFAULT_REGION \
+    ${environmentVariablesString} \
+    ${volumesString} \
+    --rm amazon/aws-cli`;
+}
 
 function sanitizeCommand(command) {
   let sanitized = command;
@@ -29,8 +46,24 @@ function sanitizeCommand(command) {
 }
 
 function execute(credentials, command) {
-  const cmdToExecute = `${DOCKER_AWS_CLI_COMMAND} ${sanitizeCommand(command)}`;
-  return exec(cmdToExecute, { env: credentials });
+  // Substituting file arguments + preparing docker volumes
+  const files = extractFileArgumentsFromCommand(command);
+  const volumes = createVolumeEntriesFromFiles(files);
+  const volumesEnvironmentVariables = mapEnvironmentVariablesFromVolumes(volumes);
+  const mockedCommand = replaceFileArguments(command, volumes);
+
+  const dockerCommand = createDockerCommand({
+    volumes,
+    environmentVariables: files.map(({ environmentVariable }) => environmentVariable),
+  });
+  const awsCommand = sanitizeCommand(mockedCommand);
+  const cmdToExecute = `${dockerCommand} ${awsCommand}`;
+  return exec(cmdToExecute, {
+    env: {
+      ...credentials,
+      ...volumesEnvironmentVariables,
+    },
+  });
 }
 
 module.exports = {
