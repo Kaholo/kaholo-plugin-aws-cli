@@ -1,7 +1,5 @@
 const { extname: getFileExtension } = require("path");
 
-const FILEPATH_REGEX = /(?:fileb?:\/\/[^\s'"]+|"fileb?:\/\/.*?[^\\]"|'fileb?:\/\/.*?[^\\]')+/g;
-
 function readCredentials(parameters) {
   return {
     AWS_ACCESS_KEY_ID: parameters.AWS_ACCESS_KEY_ID,
@@ -23,7 +21,9 @@ function generateRandomEnvironmentVariableName() {
 }
 
 function extractFileArgumentsFromCommand(command) {
-  return [...command.matchAll(FILEPATH_REGEX)].map(([path]) => ({
+  // Example matches: file:///path/to/file, "file://file.json", 'fileb:///path/to/binary-file'
+  const filepathRegex = /(?:fileb?:\/\/[^\s'"]+|"fileb?:\/\/.*?[^\\]"|'fileb?:\/\/.*?[^\\]')+/g;
+  return [...command.matchAll(filepathRegex)].map(([path]) => ({
     path: extractPathFromFileArgument(path),
     replaceBy: path,
     environmentVariable: generateRandomEnvironmentVariableName(),

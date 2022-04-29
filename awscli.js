@@ -46,17 +46,20 @@ function sanitizeCommand(command) {
 }
 
 function execute(credentials, command) {
-  // Substituting file arguments + preparing docker volumes
+  // Extract filepaths from the command string
   const files = extractFileArgumentsFromCommand(command);
+  // Create Docker volume mounting points
   const volumes = createVolumeEntriesFromFiles(files);
+  // Prepare environmental variables containing filepaths and Docker volume mounting points
   const volumesEnvironmentVariables = mapEnvironmentVariablesFromVolumes(volumes);
-  const mockedCommand = replaceFileArguments(command, volumes);
+  // Replace filepaths with Docker volume mounting points
+  const preparedCommand = replaceFileArguments(command, volumes);
 
   const dockerCommand = createDockerCommand({
     volumes,
     environmentVariables: files.map(({ environmentVariable }) => environmentVariable),
   });
-  const awsCommand = sanitizeCommand(mockedCommand);
+  const awsCommand = sanitizeCommand(preparedCommand);
   const cmdToExecute = `${dockerCommand} ${awsCommand}`;
   return exec(cmdToExecute, {
     env: {
