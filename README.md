@@ -20,11 +20,11 @@ If running your own Kaholo agents in a custom environment, you will have to ensu
 
 The first time the plugin is used on each agent, docker may spend a minute or two downloading the image. After that the delay of starting up another docker image each time is quite small, a second or two.
 
-Next, because the CLI is running inside a docker container, it will not have access to the filesystem on the agent. If for example you have used the Git plugin to clone a repository of AWS CLI JSON configuration files to the agent, and attempt to then use them in an AWS CLI command, you will get an error stating `No such file or directory`. Future development will address this.
+Next, because the CLI is running inside a docker container, it will not have access to the filesystem on the agent. If for example you have used the Git plugin to clone a repository of AWS CLI JSON configuration files to the agent, using them in a command will result in them being mapped to a docker volume within the container. To ensure this works correctly you must use the aws cli `file://` or `fileb://` syntax, and regardless of what path you put in the command, at execution time files will be named randomly and in `/tmp` such as `file:///tmp/7shb5ekqq4u.json`. AWS S3 commands in particular do not use this syntax and therefore S3 commands will not work with this plugin. Please use the S3 plugin instead.
 
-Lastly, the docker container is destroyed once the command has successfully run, so any output files will also be destroyed. Future development may address this as well, but for the time being, AWS CLI commands that use files for input or output are not supported. The only outputs are found in Final Results on the Execution Results page.
+Lastly, the docker container is destroyed once the command has successfully run, so output files will also be destroyed. Future development may address this, but for most use cases the desired output can be found in Final Results on the Kaholo Execution Results page, in code-friendly JSON format.
 
-As a work-around, should these limitations have severe impact on your use case, the AWS CLI can be installed on the agent and run via the Command Line plugin instead. A main purpose for this plugin is to help you avoid that inconvenience.
+Should these limitations negatively impact on your use case, the AWS CLI can be installed on the agent and run via the Command Line plugin instead. A main purpose for this plugin is to help you avoid that inconvenience.
 
 ## Access and Authentication
 AWS uses three parameters for access and authentication:
