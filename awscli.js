@@ -6,6 +6,7 @@ const {
   createVolumeEntriesFromFiles,
   mapEnvironmentVariablesFromVolumes,
   replaceFileArguments,
+  validatePaths,
 } = require("./helpers");
 
 const exec = util.promisify(childProcess.exec);
@@ -45,9 +46,11 @@ function sanitizeCommand(command) {
   return `$(echo "${sanitized}")`;
 }
 
-function execute(credentials, command) {
+async function execute(credentials, command) {
   // Extract filepaths from the command string
   const files = extractFileArgumentsFromCommand(command);
+  // Validate paths
+  await validatePaths(files.map(({ path }) => path));
   // Create Docker volume mounting points
   const volumes = createVolumeEntriesFromFiles(files);
   // Prepare environmental variables containing filepaths and Docker volume mounting points
