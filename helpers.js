@@ -1,3 +1,4 @@
+const { access } = require("fs/promises");
 const { extname: getFileExtension } = require("path");
 
 function readCredentials(parameters) {
@@ -65,6 +66,29 @@ function replaceFileArguments(command, volumes = []) {
   ), command);
 }
 
+async function validatePaths(paths) {
+  const validationResults = await Promise.all(
+    paths.map(async (path) => [path, await pathExists(path)]),
+  );
+
+  const nonexistentPaths = validationResults.filter(([, exists]) => !exists);
+  if (nonexistentPaths.length === 1) {
+    throw new Error(`Path ${nonexistentPaths[0][0]} does not exist!`);
+  } else if (nonexistentPaths.length > 1) {
+    const pathsString = nonexistentPaths.map(([path]) => path).join(", ");
+    throw new Error(`Paths ${pathsString} do not exist!`);
+  }
+}
+
+async function pathExists(path) {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 module.exports = {
   readCredentials,
   extractFileArgumentsFromCommand,
@@ -73,4 +97,5 @@ module.exports = {
   createVolumeEntriesFromFiles,
   mapEnvironmentVariablesFromVolumes,
   replaceFileArguments,
+  validatePaths,
 };
