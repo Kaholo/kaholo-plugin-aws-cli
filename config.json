@@ -1,5 +1,6 @@
 {
   "name": "aws-cli",
+  "viewName": "AWS CLI",
   "type": "executer",
   "imgUrl": "logo.png",
   "execProgram": "node",
