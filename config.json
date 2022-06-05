@@ -4,10 +4,10 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Kaholo plugin AWS CLI",
-  "category": "AWS",
-  "keywords": ["GCP", "compute", "google", "platform", "vm", "instance", "cloud", "cluster", "project", "infra", "infrastructure", "cli", "network", "subnetwork", "firewall", "IP", "route"],
+  "category": "Cloud Management",
+  "keywords": ["aws", "ec2", "s3", "platform", "vm", "instance", "cloud", "cluster", "amazon", "describe", "infrastructure", "cli", "aws-cli", "network", "subnetwork", "firewall", "route"],
   "settings": [
     {
       "name": "AWS_ACCESS_KEY_ID",
