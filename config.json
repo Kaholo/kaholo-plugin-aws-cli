@@ -36,38 +36,6 @@
   ],
   "methods": [
     {
-      "name": "testCli",
-      "viewName": "Test CLI",
-      "params": [
-        {
-          "name": "AWS_ACCESS_KEY_ID",
-          "viewName": "Access Key ID",
-          "type": "vault",
-          "description": "This is a parameter taken from the vault to access AWS",
-          "placeholder": "AKIAIOSFODNN7EXAMPLE",
-          "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
-        },
-        {
-          "name": "AWS_SECRET_ACCESS_KEY",
-          "viewName": "Access Key Secret",
-          "type": "vault",
-          "description": "This is a parameter taken from the vault to access AWS",
-          "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-          "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
-        },
-        {
-          "name": "REGION",
-          "viewName": "Region",
-          "type": "autocomplete",
-          "autocompleteType": "function",
-          "functionName": "listRegions",
-          "description": "Create the new bucket in the specified region.",
-          "placeholder": "us-east-2",
-          "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
-        }
-      ]
-    },
-    {
       "name": "runCommand",
       "viewName": "Run Command",
       "params": [
