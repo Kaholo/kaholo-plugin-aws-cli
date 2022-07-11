@@ -58,7 +58,7 @@
           "type": "autocomplete",
           "autocompleteType": "function",
           "functionName": "listRegions",
-          "description": "Create the new bucket in the specified region.",
+          "description": "The ID of the default region to make requests on.",
           "placeholder": "us-east-2",
           "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
         }
