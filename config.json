@@ -13,7 +13,7 @@
     "authId": "awsAccount",
     "params": [
       {
-        "name": "AWS_ACCESS_KEY_ID",
+        "name": "awsAccessKeyId",
         "viewName": "Access Key ID",
         "type": "vault",
         "description": "The default AWS Access Key ID to use for authentication.",
@@ -21,7 +21,7 @@
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       },
       {
-        "name": "AWS_SECRET_ACCESS_KEY",
+        "name": "awsSecretAccessKey",
         "viewName": "Access Key Secret",
         "type": "vault",
         "description": "The default AWS Access Key secret to use for authentication.",
@@ -32,7 +32,7 @@
   },
   "settings": [
     {
-      "name": "REGION",
+      "name": "awsRegion",
       "viewName": "Region",
       "type": "string",
       "description": "The ID of the default region to make requests on.",
@@ -53,7 +53,7 @@
           "learnUrl": "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html"
         },
         {
-          "name": "REGION",
+          "name": "awsRegion",
           "viewName": "Region",
           "type": "autocomplete",
           "autocompleteType": "function",
