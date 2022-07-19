@@ -2,14 +2,14 @@ const { access } = require("fs/promises");
 const { extname: getFileExtension } = require("path");
 
 function readCredentials(parameters) {
-  if (!parameters.awsAccessKeyId || !parameters.awsSecretAccesssKey || !parameters.awsRegion) {
+  if (!parameters.accessKeyId || !parameters.secretAccessKey || !parameters.region) {
     throw new Error("Access Key ID, Secret Access Key and Region are required parameters. Please specify them in the action's parameters or plugin's settings.");
   }
 
   return {
-    AWS_ACCESS_KEY_ID: parameters.awsAccessKeyId,
-    AWS_SECRET_ACCESS_KEY: parameters.awsSecretAccessKey,
-    AWS_DEFAULT_REGION: parameters.awsRegion,
+    AWS_ACCESS_KEY_ID: parameters.accessKeyId,
+    AWS_SECRET_ACCESS_KEY: parameters.secretAccessKey,
+    AWS_DEFAULT_REGION: parameters.region,
   };
 }
 
