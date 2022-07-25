@@ -1,5 +1,5 @@
-const awsPluginLibrary = require("kaholo-aws-plugin-library");
-const kaholo = require("kaholo-plugin-library");
+const awsPluginLibrary = require("@kaholo/aws-plugin-library");
+const kaholo = require("@kaholo/plugin-library");
 const helpers = require("./helpers");
 const awsCli = require("./awscli");
 
