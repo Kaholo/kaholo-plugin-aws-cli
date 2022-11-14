@@ -5,7 +5,7 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "version": "2.0.0",
+  "version": "2.0.99",
   "description": "Amazon Web Services (AWS) CLI",
   "category": "Cloud Management",
   "keywords": ["aws", "ec2", "s3", "platform", "vm", "instance", "cloud", "cluster", "amazon", "describe", "infrastructure", "cli", "aws-cli", "network", "subnetwork", "firewall", "route"],
@@ -44,6 +44,13 @@
       "name": "runCommand",
       "viewName": "Run Command",
       "params": [
+        {
+          "name": "workingDir",
+          "viewName": "Working Directory",
+          "type": "string",
+          "description": "The directory on the Kaholo Agent were files may be read or created by the command, if applicable. If left unconfigured, only files in the default working directory will be accessible by the CLI command",
+          "placeholder": "/home/username/"
+        },
         {
           "name": "command",
           "viewName": "Command",

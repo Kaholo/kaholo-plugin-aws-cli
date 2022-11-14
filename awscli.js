@@ -6,7 +6,7 @@ const {
   createVolumeEntriesFromFiles,
   mapEnvironmentVariablesFromVolumes,
   replaceFileArguments,
-  validatePaths,
+  validatePaths, createVolumeFromWorkingDir, createWorkingDirectoryVolume,
 } = require("./helpers");
 
 const exec = util.promisify(childProcess.exec);
@@ -46,24 +46,41 @@ function sanitizeCommand(command) {
   return `$(echo "${sanitized}")`;
 }
 
-async function execute(credentials, command) {
+async function execute(credentials, parameters) {
+  // console.info(process.cwd());
+  const { command, workingDirectory } = parameters;
   // Extract filepaths from the command string
-  const files = extractFileArgumentsFromCommand(command);
+  // const files = extractFileArgumentsFromCommand(command);
+
+  const workingDirectoryVolume = createWorkingDirectoryVolume(workingDirectory);
+  // const files = extractFiles
+  // console.info("files", files);
   // Validate paths
-  await validatePaths(files.map(({ path }) => path));
+  // await validatePaths(files.map(({ path }) => path));
   // Create Docker volume mounting points
-  const volumes = createVolumeEntriesFromFiles(files);
+  // const volumes = createVolumeEntriesFromFiles(files);
+  // console.info("volumes", volumes);
+
+  const volumeWorkingDir = createVolumeFromWorkingDir(workingDirectoryVolume);
+
   // Prepare environmental variables containing filepaths and Docker volume mounting points
-  const volumesEnvironmentVariables = mapEnvironmentVariablesFromVolumes(volumes);
+  const volumesEnvironmentVariables = mapEnvironmentVariablesFromVolumes(volumeWorkingDir);
+  console.info("volumesEnvironmentVariables", volumesEnvironmentVariables);
   // Replace filepaths with Docker volume mounting points
-  const preparedCommand = replaceFileArguments(command, volumes);
+  const preparedCommand = replaceFileArguments(command, volumeWorkingDir);
+  console.info("prepareCommand", preparedCommand);
 
   const dockerCommand = createDockerCommand({
-    volumes,
-    environmentVariables: files.map(({ environmentVariable }) => environmentVariable),
+    volumeWorkingDir,
+    environmentVariables: volumeWorkingDir.environmentVariable,
   });
+  console.info("dockerCommand", dockerCommand);
+
   const awsCommand = sanitizeCommand(preparedCommand);
+
+  console.info("awsCommand", awsCommand);
   const cmdToExecute = `${dockerCommand} ${awsCommand}`;
+  console.info("cmdToExecute", cmdToExecute);
   return exec(cmdToExecute, {
     env: {
       ...credentials,
@@ -75,3 +92,8 @@ async function execute(credentials, command) {
 module.exports = {
   execute,
 };
+
+execute(
+  { login: "A", password: "B" },
+  { command: "aws s3 sync ./logo.png s3://my-s3-bucket/" },
+).then(console.info);

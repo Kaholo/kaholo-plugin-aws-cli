@@ -35,6 +35,13 @@ function extractFileArgumentsFromCommand(command) {
   }));
 }
 
+function createWorkingDirectoryVolume(workingDirectory) {
+  return {
+    path: workingDirectory ?? "./",
+    environmentVariable: generateRandomEnvironmentVariableName(),
+  };
+}
+
 function extractPathFromFileArgument(fileArgument) {
   return fileArgument
     .replace(/((?<!\\)["']$|^(?<!\\)["'])/g, "")
@@ -49,6 +56,16 @@ function createVolumeEntriesFromFiles(files) {
     },
     file,
   }));
+}
+
+function createVolumeFromWorkingDir(workingDirectoryVolume) {
+  return {
+    mountPoint: {
+      path: `${generateRandomTemporaryPath()}`,
+      environmentVariable: generateRandomEnvironmentVariableName(),
+    },
+    workingDir: workingDirectoryVolume,
+  };
 }
 
 function mapEnvironmentVariablesFromVolumes(volumes) {
@@ -94,7 +111,9 @@ module.exports = {
   extractFileArgumentsFromCommand,
   generateRandomTemporaryPath,
   generateRandomString,
+  createVolumeFromWorkingDir,
   createVolumeEntriesFromFiles,
+  createWorkingDirectoryVolume,
   mapEnvironmentVariablesFromVolumes,
   replaceFileArguments,
   validatePaths,
