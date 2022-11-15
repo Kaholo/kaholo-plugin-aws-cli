@@ -1,5 +1,4 @@
-const { access } = require("fs/promises");
-const { extname: getFileExtension } = require("path");
+const _ = require("lodash");
 
 function readCredentials(parameters) {
   if (!parameters.accessKeyId || !parameters.secretAccessKey || !parameters.region) {
@@ -13,108 +12,23 @@ function readCredentials(parameters) {
   };
 }
 
-function generateRandomTemporaryPath() {
-  return `/tmp/${generateRandomString()}`;
-}
-
-function generateRandomString() {
-  return Math.random().toString(36).substring(2);
-}
-
-function generateRandomEnvironmentVariableName() {
-  return `KAHOLO_AWS_CLI_TMP_VAR_${generateRandomString().toUpperCase()}`;
-}
-
-function extractFileArgumentsFromCommand(command) {
-  // Example matches: file:///path/to/file, "file://file.json", 'fileb:///path/to/binary-file'
-  const filepathRegex = /(?:fileb?:\/\/[^\s'"]+|"fileb?:\/\/.*?[^\\]"|'fileb?:\/\/.*?[^\\]')+/g;
-  return [...command.matchAll(filepathRegex)].map(([fileArgument]) => ({
-    path: extractPathFromFileArgument(fileArgument),
-    replaceBy: fileArgument,
-    environmentVariable: generateRandomEnvironmentVariableName(),
-  }));
-}
-
-function createWorkingDirectoryVolume(workingDirectory) {
-  return {
-    path: workingDirectory ?? "./",
-    environmentVariable: generateRandomEnvironmentVariableName(),
-  };
-}
-
-function extractPathFromFileArgument(fileArgument) {
-  return fileArgument
-    .replace(/((?<!\\)["']$|^(?<!\\)["'])/g, "")
-    .replace(/^(?:fileb?:\/\/)?/, "");
-}
-
-function createVolumeEntriesFromFiles(files) {
-  return files.map((file) => ({
-    mountPoint: {
-      path: `${generateRandomTemporaryPath()}${getFileExtension(file.path)}`,
-      environmentVariable: generateRandomEnvironmentVariableName(),
-    },
-    file,
-  }));
-}
-
-function createVolumeFromWorkingDir(workingDirectoryVolume) {
-  return {
-    mountPoint: {
-      path: `${generateRandomTemporaryPath()}`,
-      environmentVariable: generateRandomEnvironmentVariableName(),
-    },
-    workingDir: workingDirectoryVolume,
-  };
-}
-
-function mapEnvironmentVariablesFromVolumes(volumes) {
-  return volumes
-    .map(({ mountPoint, file }) => ({
-      [mountPoint.environmentVariable]: mountPoint.path,
-      [file.environmentVariable]: file.path,
-    }))
-    .reduce((accumulate, current) => Object.assign(accumulate, current), {});
-}
-
-function replaceFileArguments(command, volumes = []) {
-  return volumes.reduce((commandString, volume) => (
-    commandString.replace(volume.file.replaceBy, `file://$${volume.mountPoint.environmentVariable}`)
-  ), command);
-}
-
-async function validatePaths(paths) {
-  const validationResults = await Promise.all(
-    paths.map(async (path) => [path, await pathExists(path)]),
-  );
-
-  const nonexistentPaths = validationResults.filter(([, exists]) => !exists);
-  if (nonexistentPaths.length === 1) {
-    throw new Error(`Path ${nonexistentPaths[0][0]} does not exist!`);
-  } else if (nonexistentPaths.length > 1) {
-    const pathsString = nonexistentPaths.map(([path]) => path).join(", ");
-    throw new Error(`Paths ${pathsString} do not exist!`);
+function sanitizeCommand(command) {
+  let sanitized = command;
+  if (_.startsWith(command.toLowerCase(), "aws ")) {
+    sanitized = command.slice(4);
   }
-}
 
-async function pathExists(path) {
-  try {
-    await access(path);
-    return true;
-  } catch {
-    return false;
-  }
+  // This is the safest way to escape the user provided command.
+  // By putting the command in double quotes, we can be sure that
+  // every character within the command is escaped, including the
+  // ones that could be used for shell injection (e.g. ';', '|', etc.).
+  // The escaped string needs then to be echoed back to the docker command
+  // in order to be properly executed - simply passing the command in double quotes
+  // would result in docker confusing the quotes as a part of the command.
+  return `$(echo "${sanitized}")`;
 }
 
 module.exports = {
   readCredentials,
-  extractFileArgumentsFromCommand,
-  generateRandomTemporaryPath,
-  generateRandomString,
-  createVolumeFromWorkingDir,
-  createVolumeEntriesFromFiles,
-  createWorkingDirectoryVolume,
-  mapEnvironmentVariablesFromVolumes,
-  replaceFileArguments,
-  validatePaths,
+  sanitizeCommand,
 };
