@@ -5,7 +5,7 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "version": "2.1.0",
+  "version": "2.0.0",
   "description": "Amazon Web Services (AWS) CLI",
   "category": "Cloud Management",
   "keywords": ["aws", "ec2", "s3", "platform", "vm", "instance", "cloud", "cluster", "amazon", "describe", "infrastructure", "cli", "aws-cli", "network", "subnetwork", "firewall", "route"],
