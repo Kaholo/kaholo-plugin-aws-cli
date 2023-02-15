@@ -4,28 +4,32 @@ const { sanitizeCommand } = require("./helpers");
 
 const exec = util.promisify(childProcess.exec);
 
-function createDockerCommand({ workingDirectory = "", environmentVariables = [] }) {
+function createDockerCommand(params) {
+  const {
+    workingDirInfo,
+    environmentVariables = [],
+  } = params;
+
   const environmentVariablesString = environmentVariables
     .map((environmentVariable) => `-e ${environmentVariable}`)
     .join(" ");
-
-  const mountDirectory = workingDirectory.trim() === "" ? process.cwd() : workingDirectory.trim();
 
   return `docker run \
     -e AWS_ACCESS_KEY_ID \
     -e AWS_SECRET_ACCESS_KEY \
     -e AWS_DEFAULT_REGION \
     ${environmentVariablesString} \
-    -v ${mountDirectory}:/aws \
+    -v ${workingDirInfo.absolutePath}:/aws \
     --rm amazon/aws-cli`;
 }
 
 async function execute(credentials, parameters) {
-  const { command, workingDir } = parameters;
+  const {
+    command,
+    workingDir: workingDirInfo,
+  } = parameters;
 
-  const dockerCommand = createDockerCommand({
-    workingDirectory: workingDir,
-  });
+  const dockerCommand = createDockerCommand({ workingDirInfo });
   const awsCommand = sanitizeCommand(command);
   const cmdToExecute = `${dockerCommand} ${awsCommand}`;
 
