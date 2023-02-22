@@ -46,12 +46,14 @@
       "params": [
         {
           "name": "workingDir",
-          "viewName": "Working Directory",
           "type": "string",
+          "default": ".",
           "parserType": "filePath",
           "parserOptions": {
             "throwIfDoesntExist": true
           },
+
+          "viewName": "Working Directory",
           "description": "The directory on the Kaholo Agent were files may be read or created by the command, if applicable. If left unconfigured, only files in the default working directory will be accessible by the CLI command",
           "placeholder": "/home/username/"
         },
