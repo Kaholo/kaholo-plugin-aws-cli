@@ -10,6 +10,10 @@ function createDockerCommand(params) {
     environmentVariables = [],
   } = params;
 
+  if (workingDirInfo.type !== "directory") {
+    throw new Error(`Specified working directory path is not a directory: ${workingDirInfo.absolutePath}`);
+  }
+
   const environmentVariablesString = environmentVariables
     .map((environmentVariable) => `-e ${environmentVariable}`)
     .join(" ");
