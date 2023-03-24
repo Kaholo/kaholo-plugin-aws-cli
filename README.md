@@ -20,50 +20,34 @@ If running your own Kaholo agents in a custom environment, you will have to ensu
 
 The first time the plugin is used on each agent, docker may spend a minute or two downloading the image. After that the delay of starting up another docker image each time is quite small, a second or two.
 
-Next, because the CLI is running inside a docker container, it will not have access to the filesystem on the agent. If for example you have used the Git plugin to clone a repository of AWS CLI JSON configuration files to the agent, using them in a command will result in them being mapped to a docker volume within the container. To ensure this works correctly you must use the aws cli `file://` or `fileb://` syntax, and regardless of what path you put in the command, at execution time files will be named randomly and in `/tmp` such as `file:///tmp/7shb5ekqq4u.json`. AWS S3 commands in particular do not use this syntax and therefore S3 commands will not work with this plugin. Please use the S3 plugin instead.
-
-Lastly, the docker container is destroyed once the command has successfully run, so output files will also be destroyed. Future development may address this, but for most use cases the desired output can be found in Final Results on the Kaholo Execution Results page, in code-friendly JSON format.
-
-Should these limitations negatively impact on your use case, the AWS CLI can be installed on the agent and run via the Command Line plugin instead. A main purpose for this plugin is to help you avoid that inconvenience.
+Next, because the CLI is running inside a docker container, it will not have access to the filesystem on the agent. If for example you have used the Git plugin to clone a repository of AWS CLI JSON configuration files to the agent, using them in a command will require that directory being mounted as a docker volume within the container. To accomodate this there is a `Working Directory` parameter. The working directory is accessible within the docker container and will remain after the AWS CLI command completes and the continaer is deleted. Be sure any files to be read or written by your AWS CLI commands are inside the specified `Working Directory`.
 
 ## Access and Authentication
-AWS uses three parameters for access and authentication:
+AWS uses two parameters for access and authentication, these are stored in the Kaholo Vault and configured via a Kaholo Account.
 * Access Key ID, e.g. `AKIA3LQJ67DU53G3DNEW`
-* Secret Access Key, e.g. `Hw8Il3qOGpOflIbCaMb0SxLAB2zk4naTBKiybsNx`
-* Region, e.g. `ap-southeast-1`
+* Access Key Secret, e.g. `Hw8Il3qOGpOflIbCaMb0SxLAB2zk4naTBKiybsNx`
 
-Only the Secret Access Key is a genuine secret that should be guarded carefully to avoid abuse of your account. For security purposes the Kaholo plugin stores both the Access Key ID and the Secret Access Key in the Kaholo vault. This allows them to be used widely without ever appearing in configuration, logs, or output.
+Only the Access Key Secret is a genuine secret that should be guarded carefully to avoid abuse of your account. For security purposes the Kaholo plugin stores both the Access Key ID and the Secret Access Key in the Kaholo vault. This allows them to be used widely without ever appearing in configuration, logs, or output.
 
 The Access Key ID and Secret Access Key are a matched set of credentials that will work in any Region, subject to the security configuration of the user account to which these keys belong.
 
-Region simply determines the geographical location of the AWS data center where the underlying hardware actually runs, and to a degree which features are available and the price of the services. For example `ap-southeast-1` is AWS's data center in Singapore.
+## Plugin Settings
+There is one Plugin setting, Default AWS Region. Region simply determines the geographical location of the AWS data center where the underlying hardware actually runs, and to a degree which features are available and the price of the services. For example `ap-southeast-1` is AWS's data center in Singapore.
+
+Any new AWS CLI plugin action created will by default have (if configured) this Default AWS Region. If the action requires another region or no region it can be simply edited. If the CLI command include a `--region` argument that overrides what is configured in the parameter.
 
 ## Plugin Installation
 For download, installation, upgrade, downgrade and troubleshooting of plugins in general, see [INSTALL.md](./INSTALL.md).
 
-## Plugin Settings
-Plugin settings act as default parameter values. If configured in plugin settings, the action parameters may be left unconfigured. Action parameters configured anyway over-ride the plugin-level settings for that Action.
-
-The settings for AWS CLI Plugin include the three discussed above in the [Access and Authentication](#Access-and-Authentication) section.
-
-* Default Access Key ID
-* Default Secret Access Key
-* Default Region
-
-These are also required parameters for all methods of this plugin.
-
-## Method: Test CLI
-This method does a trivial test to see if the plugin is working properly and the provided credentials valid. It is the equivalent of running the command:
-
-`aws sts get-caller-identity`
-
-### Parameters
-There are no parameters required for this method beyond the three discussed above in the [Access and Authentication](#Access-and-Authentication) section.
-
 ## Method: Run Command
-This method runs any AWS CLI command. While these commands all being with `aws`, in this plugin you may omit that first word if you wish. For example the command `ec2 describe-instances` will be interpreted the same as `aws ec2 describe-instances`.
+This method runs any AWS CLI command.
 
-### Parameters
-Beyond the three discussed above in the [Access and Authentication](#Access-and-Authentication) section, only the command itself is required.
+### Parameter: Working Directory
+Working Directory may be left empty or defined as a relative or absolute path to a directory on the Kaholo Agent. This is necessary only if files are read or written by the AWS CLI command. The Working Directory is mounted as a docker volume by the container running the AWS CLI command so that files will be accessible by the CLI and also remain after the command completes and the docker container is destroyed.
 
-* Command - the command to run, e.g. `aws ec2 describe-instances`
+### Parameter: AWS CLI Command
+The command to run, e.g. `aws ec2 describe-instances`
+
+### Parameter: AWS Region
+Many AWS CLI commands require a `--region` argument, specifying which geographical AWS Region to target. Often the same region is used again and again and including this argument in the commands is tedius. For this reason AWS Region is provided as a Kaholo parameter and also as a plugin setting, so that it may default appropriately and/or be tied into configuration or code rather than included directly in commands. If the Kaholo parameter is defined and the `--region` argument also appears in the AWS CLI Command, the one specified in the command takes precedence.
+
