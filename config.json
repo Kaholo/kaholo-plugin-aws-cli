@@ -16,7 +16,7 @@
         "name": "accessKeyId",
         "viewName": "Access Key ID",
         "type": "vault",
-        "description": "The default AWS Access Key ID to use for authentication.",
+        "description": "AWS Access Key ID to use for authentication.",
         "placeholder": "AKIAIOSFODNN7EXAMPLE",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       },
@@ -24,7 +24,7 @@
         "name": "secretAccessKey",
         "viewName": "Access Key Secret",
         "type": "vault",
-        "description": "The default AWS Access Key secret to use for authentication.",
+        "description": "The AWS Access Key secret to use for authentication.",
         "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       }
@@ -33,9 +33,10 @@
   "settings": [
     {
       "name": "region",
-      "viewName": "Region",
+      "viewName": "Default AWS Region",
       "type": "string",
-      "description": "The ID of the default region to make requests on.",
+      "description": "The AWS Region to use by default",
+      "placeholder": "us-west-1",
       "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
     }
   ],
@@ -47,31 +48,30 @@
         {
           "name": "workingDir",
           "type": "string",
-          "default": ".",
           "parserType": "filePath",
           "parserOptions": {
             "throwIfDoesntExist": true
           },
-
           "viewName": "Working Directory",
-          "description": "The directory on the Kaholo Agent were files may be read or created by the command, if applicable. If left unconfigured, only files in the default working directory will be accessible by the CLI command",
-          "placeholder": "/home/username/"
+          "description": "The directory on the Kaholo Agent were files may be read or created by the command, if applicable",
+          "placeholder": "repos/instancetemplates"
         },
         {
           "name": "command",
-          "viewName": "Command",
+          "viewName": "AWS CLI Command",
           "type": "string",
+          "required": true,
           "description": "AWS CLI command to run",
           "placeholder": "aws ec2 describe-instances",
           "learnUrl": "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html"
         },
         {
           "name": "region",
-          "viewName": "Region",
+          "viewName": "AWS Region",
           "type": "autocomplete",
           "autocompleteType": "function",
           "functionName": "listRegions",
-          "description": "The ID of the default region to make requests on.",
+          "description": "The AWS Region to use if \"--region\" is not included in the command",
           "placeholder": "us-east-2",
           "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
         }
