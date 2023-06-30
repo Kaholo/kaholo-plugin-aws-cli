@@ -1,6 +1,7 @@
 const util = require("util");
 const childProcess = require("child_process");
 const { sanitizeCommand } = require("./helpers");
+const { helpers } = require("@kaholo/plugin-library");
 
 const exec = util.promisify(childProcess.exec);
 
@@ -30,7 +31,7 @@ function createDockerCommand(params) {
 async function execute(credentials, parameters) {
   const {
     command,
-    workingDir: workingDirInfo,
+    workingDir: workingDirInfo = await helpers.analyzePath("./"), // allow undefined param
   } = parameters;
 
   const dockerCommand = createDockerCommand({ workingDirInfo });
