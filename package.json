@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@kaholo/aws-plugin-library": "^3.0.1",
-    "@kaholo/plugin-library": "github:Kaholo/kaholo-plugin-library#846eba5b96a1ff23455bc5a81c84aa195ae63755",
+    "@kaholo/plugin-library": "github:Kaholo/kaholo-plugin-library#f54ecf3025438aaf9e092b5e185806b1d875610c",
     "lodash": "4.17.21"
   }
 }
