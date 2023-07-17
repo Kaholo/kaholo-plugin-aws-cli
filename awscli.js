@@ -1,7 +1,7 @@
 const util = require("util");
 const childProcess = require("child_process");
-const { sanitizeCommand } = require("./helpers");
 const { helpers } = require("@kaholo/plugin-library");
+const { sanitizeCommand } = require("./helpers");
 
 const exec = util.promisify(childProcess.exec);
 
