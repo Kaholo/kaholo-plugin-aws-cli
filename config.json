@@ -73,7 +73,7 @@
           "autocompleteType": "function",
           "functionName": "listRegions",
           "description": "The AWS Region to use if \"--region\" is not included in the command",
-          "placeholder": "us-east-2",
+          "placeholder": "us-west-1",
           "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
         }
       ]
