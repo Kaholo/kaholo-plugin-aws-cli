@@ -50,7 +50,8 @@
           "type": "string",
           "parserType": "filePath",
           "parserOptions": {
-            "throwIfDoesntExist": true
+            "throwIfDoesntExist": false,
+            "acceptedTypes": "directory"
           },
           "viewName": "Working Directory",
           "description": "The directory on the Kaholo Agent were files may be read or created by the command, if applicable",
@@ -72,7 +73,7 @@
           "autocompleteType": "function",
           "functionName": "listRegions",
           "description": "The AWS Region to use if \"--region\" is not included in the command",
-          "placeholder": "us-east-2",
+          "placeholder": "us-west-1",
           "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
         }
       ]

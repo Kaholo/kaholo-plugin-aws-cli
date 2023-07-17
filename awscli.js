@@ -1,5 +1,6 @@
 const util = require("util");
 const childProcess = require("child_process");
+const { helpers } = require("@kaholo/plugin-library");
 const { sanitizeCommand } = require("./helpers");
 
 const exec = util.promisify(childProcess.exec);
@@ -23,14 +24,15 @@ function createDockerCommand(params) {
     -e AWS_SECRET_ACCESS_KEY \
     -e AWS_DEFAULT_REGION \
     ${environmentVariablesString} \
-    -v ${workingDirInfo.absolutePath}:/aws \
+    -v ${workingDirInfo.absolutePath}:${workingDirInfo.absolutePath} \
+    --workdir ${workingDirInfo.absolutePath} \
     --rm amazon/aws-cli`;
 }
 
 async function execute(credentials, parameters) {
   const {
     command,
-    workingDir: workingDirInfo,
+    workingDir: workingDirInfo = await helpers.analyzePath("./"), // allow undefined param
   } = parameters;
 
   const dockerCommand = createDockerCommand({ workingDirInfo });
