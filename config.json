@@ -50,7 +50,8 @@
           "type": "string",
           "parserType": "filePath",
           "parserOptions": {
-            "throwIfDoesntExist": true
+            "throwIfDoesntExist": false,
+            "acceptedTypes": "directory"
           },
           "viewName": "Working Directory",
           "description": "The directory on the Kaholo Agent were files may be read or created by the command, if applicable",

@@ -24,7 +24,8 @@ function createDockerCommand(params) {
     -e AWS_SECRET_ACCESS_KEY \
     -e AWS_DEFAULT_REGION \
     ${environmentVariablesString} \
-    -v ${workingDirInfo.absolutePath}:/aws \
+    -v ${workingDirInfo.absolutePath}:${workingDirInfo.absolutePath} \
+    --workdir ${workingDirInfo.absolutePath} \
     --rm amazon/aws-cli`;
 }
 
