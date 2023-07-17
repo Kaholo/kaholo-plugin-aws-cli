@@ -1,14 +1,14 @@
 const _ = require("lodash");
 
 function readCredentials(parameters) {
-  if (!parameters.accessKeyId || !parameters.secretAccessKey || !parameters.region) {
-    throw new Error("Access Key ID, Secret Access Key and Region are required parameters. Please specify them in the action's parameters or plugin's settings.");
+  if (!parameters.accessKeyId || !parameters.secretAccessKey) {
+    throw new Error("Access Key ID and Secret Access Key are required parameters. Please specify them in the plugin account.");
   }
 
   return {
     AWS_ACCESS_KEY_ID: parameters.accessKeyId,
     AWS_SECRET_ACCESS_KEY: parameters.secretAccessKey,
-    AWS_DEFAULT_REGION: parameters.region,
+    AWS_DEFAULT_REGION: parameters.region || "us-west-1",
   };
 }
 
