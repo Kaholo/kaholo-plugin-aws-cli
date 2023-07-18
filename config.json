@@ -34,7 +34,8 @@
         "name": "accessKeyId",
         "viewName": "Access Key ID",
         "type": "vault",
-        "description": "AWS Access Key ID to use for authentication.",
+        "required": true,
+        "description": "AWS Access Key ID to use for authentication",
         "placeholder": "AKIAIOSFODNN7EXAMPLE",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       },
@@ -42,7 +43,8 @@
         "name": "secretAccessKey",
         "viewName": "Secret Access Key",
         "type": "vault",
-        "description": "The AWS Secret Access Key to use for authentication.",
+        "required": true,
+        "description": "The AWS Secret Access Key to use for authentication",
         "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       }
