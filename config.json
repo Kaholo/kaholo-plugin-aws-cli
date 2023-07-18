@@ -5,7 +5,7 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Amazon Web Services CLI - on-demand cloud computing platforms and APIs",
   "category": "Cloud Management",
   "keywords": [
