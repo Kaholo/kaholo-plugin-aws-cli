@@ -24,8 +24,8 @@
     "jest": "27.5.0"
   },
   "dependencies": {
-    "@kaholo/aws-plugin-library": "^2.0.0",
-    "@kaholo/plugin-library": "^2.1.0",
+    "@kaholo/aws-plugin-library": "^3.0.1",
+    "@kaholo/plugin-library": "^2.3.2",
     "lodash": "4.17.21"
   }
 }

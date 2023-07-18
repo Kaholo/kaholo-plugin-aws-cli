@@ -5,10 +5,28 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "version": "2.0.0",
-  "description": "Amazon Web Services (AWS) CLI",
+  "version": "3.0.0",
+  "description": "Amazon Web Services CLI - on-demand cloud computing platforms and APIs",
   "category": "Cloud Management",
-  "keywords": ["aws", "ec2", "s3", "platform", "vm", "instance", "cloud", "cluster", "amazon", "describe", "infrastructure", "cli", "aws-cli", "network", "subnetwork", "firewall", "route"],
+  "keywords": [
+    "aws",
+    "web",
+    "services",
+    "ec2",
+    "s3",
+    "platform",
+    "instance",
+    "cloudformation",
+    "amazon",
+    "infrastructure",
+    "cli",
+    "aws-cli",
+    "vpc",
+    "cloudfront",
+    "lambda",
+    "elastic",
+    "lightsail"
+  ],
   "auth": {
     "authId": "awsAccount",
     "params": [
@@ -16,15 +34,17 @@
         "name": "accessKeyId",
         "viewName": "Access Key ID",
         "type": "vault",
-        "description": "The default AWS Access Key ID to use for authentication.",
+        "required": true,
+        "description": "AWS Access Key ID to use for authentication",
         "placeholder": "AKIAIOSFODNN7EXAMPLE",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       },
       {
         "name": "secretAccessKey",
-        "viewName": "Access Key Secret",
+        "viewName": "Secret Access Key",
         "type": "vault",
-        "description": "The default AWS Access Key secret to use for authentication.",
+        "required": true,
+        "description": "The AWS Secret Access Key to use for authentication",
         "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       }
@@ -33,9 +53,10 @@
   "settings": [
     {
       "name": "region",
-      "viewName": "Region",
+      "viewName": "Default AWS Region",
       "type": "string",
-      "description": "The ID of the default region to make requests on.",
+      "description": "The AWS Region to use by default",
+      "placeholder": "us-west-1",
       "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
     }
   ],
@@ -45,21 +66,34 @@
       "viewName": "Run Command",
       "params": [
         {
-          "name": "command",
-          "viewName": "Command",
+          "name": "workingDir",
           "type": "string",
+          "parserType": "filePath",
+          "parserOptions": {
+            "throwIfDoesntExist": false,
+            "acceptedTypes": "directory"
+          },
+          "viewName": "Working Directory",
+          "description": "The directory on the Kaholo Agent were files may be read or created by the command, if applicable",
+          "placeholder": "repos/instancetemplates"
+        },
+        {
+          "name": "command",
+          "viewName": "AWS CLI Command",
+          "type": "string",
+          "required": true,
           "description": "AWS CLI command to run",
           "placeholder": "aws ec2 describe-instances",
           "learnUrl": "https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html"
         },
         {
           "name": "region",
-          "viewName": "Region",
+          "viewName": "AWS Region",
           "type": "autocomplete",
           "autocompleteType": "function",
           "functionName": "listRegions",
-          "description": "The ID of the default region to make requests on.",
-          "placeholder": "us-east-2",
+          "description": "The AWS Region to use if \"--region\" is not included in the command",
+          "placeholder": "us-west-1",
           "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
         }
       ]

@@ -6,7 +6,7 @@ const awsCli = require("./awscli");
 async function runCommand(parameters) {
   const credentials = helpers.readCredentials(parameters);
   try {
-    const result = await awsCli.execute(credentials, parameters.command);
+    const result = await awsCli.execute(credentials, parameters);
     return result.stdout;
   } catch (error) {
     throw new Error(error.stderr ?? error);
