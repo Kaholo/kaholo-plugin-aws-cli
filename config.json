@@ -6,9 +6,27 @@
   "execProgram": "node",
   "main": "app.js",
   "version": "2.0.0",
-  "description": "Amazon Web Services (AWS) CLI",
+  "description": "Amazon Web Services CLI - on-demand cloud computing platforms and APIs",
   "category": "Cloud Management",
-  "keywords": ["aws", "ec2", "s3", "platform", "vm", "instance", "cloud", "cluster", "amazon", "describe", "infrastructure", "cli", "aws-cli", "network", "subnetwork", "firewall", "route"],
+  "keywords": [
+    "aws",
+    "web",
+    "services",
+    "ec2",
+    "s3",
+    "platform",
+    "instance",
+    "cloudformation",
+    "amazon",
+    "infrastructure",
+    "cli",
+    "aws-cli",
+    "vpc",
+    "cloudfront",
+    "lambda",
+    "elastic",
+    "lightsail"
+  ],
   "auth": {
     "authId": "awsAccount",
     "params": [
@@ -22,9 +40,9 @@
       },
       {
         "name": "secretAccessKey",
-        "viewName": "Access Key Secret",
+        "viewName": "Secret Access Key",
         "type": "vault",
-        "description": "The AWS Access Key secret to use for authentication.",
+        "description": "The AWS Secret Access Key to use for authentication.",
         "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       }
