@@ -44,7 +44,7 @@
         "viewName": "Secret Access Key",
         "type": "vault",
         "required": true,
-        "description": "The AWS Secret Access Key to use for authentication",
+        "description": "AWS Secret Access Key to use for authentication",
         "placeholder": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
         "learnUrl": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey"
       }
@@ -55,9 +55,9 @@
       "name": "region",
       "viewName": "Default AWS Region",
       "type": "string",
-      "description": "The AWS Region to use by default",
+      "description": "AWS Region to use by default",
       "placeholder": "us-west-1",
-      "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/s3.html"
+      "learnUrl": "https://docs.aws.amazon.com/general/latest/gr/rande.html#regional-endpoints"
     }
   ],
   "methods": [
